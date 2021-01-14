@@ -91,6 +91,7 @@ linkList.addEventListener('click', (e) => {
     // call showPage function passing the `list` parameter and page to display as arugments
     showPage(studentList, eventTarget.textContent);
       }
+     
    });
 
 
