@@ -10,7 +10,6 @@ For assistance:
 */
 
 
-
 /*
 Create the `showPage` function
 This function will create and insert/append the elements needed to display a "page" of nine students
@@ -22,8 +21,8 @@ function showPage(studentList, page) {
    const ul = document.querySelector(".student-list");
    ul.innerHTML = "";
    for (let i = startIndex; i < studentList.length && i < endIndex; i++) {
-      const html = `
-      <li class="student-item cf">
+      const html = 
+      `<li class="student-item cf">
       <div class="student-details">
         <img class="avatar" src="${studentList[i].picture.thumbnail}" 
         alt="profile photo">
@@ -33,16 +32,10 @@ function showPage(studentList, page) {
       <div class="joined-details">
         <span class="date">${studentList[i].registered.date}</span>
       </div>
-    </li>`
+    </li>`;
       ul.insertAdjacentHTML('beforeend', html);      
     }
    }
-
-showPage(data, 1);
-
-
-// START HERE
-
 
 /*
 Create the `addPagination` function
@@ -50,49 +43,51 @@ This function will create and insert/append the elements needed for the paginati
 */
 
 function addPagination(studentList) {
+ 
 // create variable to calculate number of page buttons needed
-
 let pagesNeeded = Math.ceil(studentList.length / itemsPerPage);
   // if total students in array is multiple of "itemsPerPage"-- divide, but
   // if total students / "itemsPerPage" results in float, use Math.floor, round down + 1
- 
-  
+   
 // select element with class `link-list` and assign to variable
 linkList.innerHTML = ""; 
 
 // loop over number of pages needed
-// create elements neede to diplay the pagination button
+// create elements neede to display the pagination button
 
 for (let i = 0; i < pagesNeeded; i++) {
   // give first pagination button the class "active"
-  if (i == 0) {
-    linkList.insertAdjacentHTML("beforeend", `<li>
-      <button class="active" type="button">${i + 1}</button>
-    </li>`);
-    } else {
-    linkList.insertAdjacentHTML("beforeend",
+if (i === 0) {
+  linkList.insertAdjacentHTML ("beforeend",
+  `<li>
+  <button class = "active" type="button">${i + 1}</button>
+  </li>`);
+}
+  else {
+    linkList.insertAdjacentHTML("beforeend", 
     `<li>
-    <button type="button">${i + 1}</button>
+    <button type="button">${i + 1}</button> 
     </li>`);
-    }
   }
 }
 
-// create event listener on the `link-list` element
+//create event listener on `link-list`
 
 linkList.addEventListener('click', (e) => {
   let eventTarget = e.target;
-// if click event target is button:
-  if (eventTarget.tagName === 'BUTTON') {
-    // remove "active" class from previous button
-    document.querySelector('.active').className = '';
-    //add active class to the clicked button
-   e.target.className === 'active';
-    // call showPage function passing the `list` parameter and page to display as arugments
-    showPage(studentList, eventTarget.textContent);
-      }
-     
-   });
+  // if click target is button fire event
+  if (eventTarget.tagName === 'button') {
+//remove "active" class from previous buttons
+    document.querySelector(".active").className = '';
+// and 'active' class added to button clicked
+e.target.className = 'active';
 
+// call showPage function and pass list parameter and page # as arguments
+showPage(studentList, eventTarget.textContent);
+    }
+  });
+} 
+// call functions
+showPage(data, 1);
 
-// Call functions
+addPagination(data); 
