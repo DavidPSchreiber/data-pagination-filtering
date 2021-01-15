@@ -76,7 +76,7 @@ if (i === 0) {
 linkList.addEventListener('click', (e) => {
   let eventTarget = e.target;
   // if click target is button fire event
-  if (eventTarget.tagName === 'button') {
+  if (eventTarget.tagName === 'BUTTON') {
 //remove "active" class from previous buttons
     document.querySelector(".active").className = '';
 // and 'active' class added to button clicked
