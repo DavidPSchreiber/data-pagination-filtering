@@ -2,6 +2,7 @@
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
 const itemsPerPage = 9;
+const header = document.querySelector('.header');
 
 /*
 For assistance:
@@ -76,7 +77,7 @@ if (i === 0) {
 linkList.addEventListener('click', (e) => {
   let eventTarget = e.target;
   // if click target is button fire event
-  if (eventTarget.tagName === 'button') {
+  if (eventTarget.tagName === 'BUTTON') {
 //remove "active" class from previous buttons
     document.querySelector(".active").className = '';
 // and 'active' class added to button clicked
@@ -89,5 +90,71 @@ showPage(studentList, eventTarget.textContent);
 } 
 // call functions
 showPage(data, 1);
-
 addPagination(data); 
+
+
+
+// add search function
+
+
+
+header.insertAdjacentHTML("beforeend",
+    `<label for="search" class="student-search">
+        <input id="search" placeholder="Search by name...">
+        <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+  </label>`);
+
+const search = document.querySelector('#search');
+const searchLabel = document.querySelector('.student-search');
+const searchButton = searchLabel.querySelector('[type="button"]');
+
+function searchStudents(searchInput, students) {
+  studentList.innerHTML = "";
+  linkList.innerHTML = "";
+}
+
+// create an empty array of student objects
+
+let data2 = [];
+
+   // Loop every objects of student array 
+
+   students.forEach(function (person) {
+
+    // If searchInput = Empty, calls the initial functions
+    if (searchInput.value.length == 0) {
+        showPage(data, 1);
+        addPagination(data);
+    }
+
+    // If searchInput is not empty and objects of array include values of the searchInput:
+    else if (searchInput.value.length != 0 && ((person.name.first.toLowerCase().includes(searchInput.value.toLowerCase())) || (person.name.last.toLowerCase().includes(searchInput.value.toLowerCase())))) {
+        // objects are added to the array
+        data2.push(person);
+        // objects of the arrays who meet the search input are displayed
+        showPage(data2, 1)
+        // number of pagination of button are added 
+        addPagination(data2);
+    }
+});
+
+// if new student array is empty, throw error
+
+if (searchInput.value.length !=0 && data2.length === 0){
+    studentList.innerHTML = "";
+    studentList.insertAdjacentHTML("beforeend", '<p>Sorry, no student found</p>');
+  }
+
+
+  // Add eventListener for buttons
+
+  searchButton.addEventListener('click', (event) => {
+    searchStudents(search, data);
+  });
+
+  // submit input from search listener
+  search.addEventListener('keyup', () => {
+    event.preventDefault();
+    searchStudents(search, data);
+  });
+
