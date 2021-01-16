@@ -158,3 +158,4 @@ if (searchInput.value.length !=0 && data2.length === 0){
     searchStudents(search, data);
   });
 
+addPagination(data); 
