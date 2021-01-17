@@ -1,4 +1,3 @@
-
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
 const itemsPerPage = 9;
@@ -119,7 +118,7 @@ let data2 = [];
 
    // Loop every objects of student array 
 
-   students.forEach(function (person) {
+   students.forEach(function(person) {
 
     // If searchInput = Empty, calls the initial functions
     if (searchInput.value.length == 0) {
@@ -158,4 +157,9 @@ if (searchInput.value.length !=0 && data2.length === 0){
     searchStudents(search, data);
   });
 
-addPagination(data); 
+// Call functions
+
+
+
+showPage(data, 1);
+addPagination(data);
