@@ -3,12 +3,6 @@ const linkList = document.querySelector('.link-list');
 const itemsPerPage = 9;
 const header = document.querySelector('.header');
 
-/*
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-*/
-
 
 /*
 Create the `showPage` function
@@ -93,73 +87,87 @@ addPagination(data);
 
 
 
-// add search function
+// add function to search array of students
 
 
+function addSearch(list) {
 
-header.insertAdjacentHTML("beforeend",
-    `<label for="search" class="student-search">
-        <input id="search" placeholder="Search by name...">
-        <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
-  </label>`);
+  // Add html for a "search" label and add it to .header
 
-const search = document.querySelector('#search');
-const searchLabel = document.querySelector('.student-search');
-const searchButton = searchLabel.querySelector('[type="button"]');
+  const header = document.querySelector('.header');
+  const html = `<label for="search" class="student-search">
+  <input id="search" placeholder="Search by name...">
+  <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+</label>`;
+header.insertAdjacentHTML('beforeend', html);
+  
+  // Create a span element and append it to searchLabel if search yields no match
 
-function searchStudents(searchInput, students) {
-  studentList.innerHTML = "";
-  linkList.innerHTML = "";
-}
+  const page = document.querySelector('.page');
+  const p = document.createElement('p');
+  page.insertBefore(p, studentList);
+  p.textContent = '';
 
-// create an empty array of student objects
+  // Select search input element
+  let searchInput = document.querySelector('#search');
+  
+  // Add eventListener on keyup
+  searchInput.addEventListener('keyup', (e) => {
+        
+     // Return to default states
+     searchInput.placeholder = 'Search by name...';
+     p.textContent = '';
 
-let data2 = [];
+     let searchValue = searchInput.value;
+     let searchResults = [];
 
-   // Loop every objects of student array 
+     // If searchResults is empty, show full list
+     if (searchValue.length === 0) {
+        showPage(list, 1);
+        addPagination(list);
+     } else {
 
-   students.forEach(function(person) {
+        // loop through student list and compare searchValue to student first and last name
+       
+        for (let i = 0; i < list.length; i++) {
+           let student = list[i];
+           let fullName = `${student.name.first} ${student.name.last}`;
+           if (fullName.toLowerCase().includes(searchValue.toLowerCase())) {
+              searchResults.push(student);
+           };
+        };
 
-    // If searchInput = Empty, calls the initial functions
-    if (searchInput.value.length == 0) {
-        showPage(data, 1);
-        addPagination(data);
-    }
+        // If no match found, display message
+        if (searchResults.length === 0) {
+           p.textContent = 'Sorry, no matches found';
+           showPage([], 1);
+           addPagination([]);
+        };
 
-    // If searchInput is not empty and objects of array include values of the searchInput:
-    else if (searchInput.value.length != 0 && ((person.name.first.toLowerCase().includes(searchInput.value.toLowerCase())) || (person.name.last.toLowerCase().includes(searchInput.value.toLowerCase())))) {
-        // objects are added to the array
-        data2.push(person);
-        // objects of the arrays who meet the search input are displayed
-        showPage(data2, 1)
-        // number of pagination of button are added 
-        addPagination(data2);
-    }
-});
-
-// if new student array is empty, throw error
-
-if (searchInput.value.length !=0 && data2.length === 0){
-    studentList.innerHTML = "";
-    studentList.insertAdjacentHTML("beforeend", '<p>Sorry, no student found</p>');
-  }
-
-
-  // Add eventListener for buttons
-
-  searchButton.addEventListener('click', (event) => {
-    searchStudents(search, data);
+        // Call functions based on searchResults
+        showPage(searchResults, 1);
+        addPagination(searchResults);
+     };
   });
 
-  // submit input from search listener
-  search.addEventListener('keyup', () => {
-    event.preventDefault();
-    searchStudents(search, data);
+  // Add event listener to change search input message if the button is clicked with no input
+  header.addEventListener('click', (e) => {
+     if (e.target.tagName === 'IMG' || e.target.tagName === 'BUTTON') {
+        let searchValue = searchInput.value;
+        if (searchValue.length === 0){
+           searchInput.placeholder = "Please enter valid name";
+        }
+     };
   });
+};
 
-// Call functions
+// call functions
 
-
-
+// Call showPage() with initial array and initialize on page 1
 showPage(data, 1);
+
+// Call addPagination() with our initial data array
 addPagination(data);
+
+// Call addSearch() with our initial data array
+addSearch(data);
